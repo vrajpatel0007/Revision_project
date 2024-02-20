@@ -132,7 +132,6 @@ const userupdate = async (req, res) => {
         }
       });
       body.image = "public/temp/" + req.files.image[0].filename;
-      // If you have other fields in the image update, add them here
     }
 
     const updateuser = await Userservice.updateuser(userid, body);
