@@ -159,7 +159,7 @@ const userupdate = async (req, res) => {
 };
 
 
-// userupdate
+// forgetpassword
 
 // const forgetpassword = async (req, res) => {
 //   try {
@@ -172,6 +172,8 @@ const userupdate = async (req, res) => {
 //     res.json({ message: error.message });
 //   }
 // };
+
+
 // profile
 const profile = (req, res) => {
   let user = req.user;
