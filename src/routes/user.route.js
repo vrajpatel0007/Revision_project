@@ -16,11 +16,7 @@ router.post(
 );
 router.get("/list", autheticate, user_controller.userlist);
 router.get("/userByid/:userId", autheticate, user_controller.Iduser);
-  // router.put(
-  //   "/Changepassword/:userId",
-  //   autheticate,
-  //   user_controller.forgetpassword
-  // );
+router.put("/Changepassword/:userId",user_controller.forgetpassword);
 router.put(
   "/userupdate/:userId",
   autheticate,

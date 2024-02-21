@@ -2,6 +2,7 @@ const Userservice = require("../services/user.service");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
 const { send_mail } = require("../services/mail.service");
+const { send_otp } = require("../services/verify.service ");
 const { createToken } = require("../middleware/auth");
 
 
@@ -40,7 +41,6 @@ const register = async (req, res) => {
   }
 };
 
-
 // userlist
 const userlist = async (req, res) => {
   try {
@@ -66,9 +66,7 @@ const usersdelete = async (req, res) => {
   }
 };
 
-
 // Iduser
-
 const Iduser = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -85,7 +83,6 @@ const Iduser = async (req, res) => {
 };
 
 // login user
-
 const login = async (req, res) => {
   const body = req.body;
   const password = req.body.password;
@@ -121,7 +118,6 @@ const login = async (req, res) => {
 };
 
 // userupdate
-
 const userupdate = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -161,17 +157,36 @@ const userupdate = async (req, res) => {
 
 // forgetpassword
 
-// const forgetpassword = async (req, res) => {
-//   try {
-//     const userid = req.params.userId;
-//     const userExists = await Userservice.findById(userid);
-//     if (!userExists) {
-//       res.json({ message: "user not found!" });
-//     }
-//   } catch (error) {
-//     res.json({ message: error.message });
-//   }
-// };
+const forgetpassword = async (req, res) => {
+  try {
+    const userid = req.params.userId;
+    const userExists = await Userservice.findById(userid);
+    if (!userExists) {
+      res.json({ message: "user not found!" });
+    }
+
+    console.log("🚀 ~ forgetpassword ~ userExists.email:", userExists.email)
+    const otp = await send_otp(userExists.email,);
+    console.log("🚀 ~ forgetpassword ~ otp:", otp)
+
+
+    const newpassword = req.body.newpassword
+    const password = req.body.password
+    if (!password==newpassword) {
+        res.json({ message: "passwords does not match?" });
+    }
+  const bpass = await bcrypt.hash(password, 10);
+  const pass ={
+    password: bpass,
+  }
+  const changepassword = await Userservice.changepass(userid,pass.password)
+
+res.json({message: "successfull password changed"})
+  
+  } catch (error) {
+    res.json({ message: error.message });
+  }
+};
 
 
 // profile
@@ -187,6 +202,6 @@ module.exports = {
   login,
   Iduser,
   userupdate,
-  // forgetpassword,
+  forgetpassword,
   profile,
 };

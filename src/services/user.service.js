@@ -29,6 +29,11 @@ const updateuser = async (userId, updateBody) => {
   return User.findByIdAndUpdate(userId, { $set: updateBody },{new:true});
 };
 
+const changepass =(userId, password) => {
+  return User.findByIdAndUpdate(userId, { password},{new:true});
+};
+
+
 module.exports = {
   register,
   userlist,
@@ -37,4 +42,5 @@ module.exports = {
   userbyid,
   findemail,
   updateuser,
+  changepass
 };
