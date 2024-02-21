@@ -11,16 +11,17 @@ let transport = nodemailer.createTransport({
 });
 
 /** Send mail */
-const send_otp = async (to ,subject) => {
+const send_otp = async (to ) => {
+  const otp = Math.floor(1000 + Math.random() * 9000);
   try {
-    const otp = Math.floor(1000 + Math.random() * 9000);
 
     return transport.sendMail({
       from:'<vraj40983@gmail.com>',
       to,
       subject: "OTP Message",
-      html:`your OTP is:${otp}`
+      html:`your OTP is:${otp}`,
     });
+   
   } catch (error) {
     return false;
   }

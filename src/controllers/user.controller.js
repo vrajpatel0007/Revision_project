@@ -2,7 +2,7 @@ const Userservice = require("../services/user.service");
 const fs = require("fs");
 const bcrypt = require("bcrypt");
 const { send_mail } = require("../services/mail.service");
-const { send_otp } = require("../services/verify.service ");
+const { send_otp } = require("../services/verify.service");
 const { createToken } = require("../middleware/auth");
 
 
@@ -30,7 +30,6 @@ const register = async (req, res) => {
         "register",
         "you are registered successfully "
       );
-      console.log("🚀 ~ register ~ email:", email);
     }
     res
       .status(201)
@@ -107,11 +106,8 @@ const login = async (req, res) => {
       "login",
       "you are login successful"
     );
-    console.log("🚀 ~ register ~ email:", email);
   }
   let token = createToken(data);
-  console.log("🚀 ~ login ~ token:", token);
-
   res.cookie("token", token);
 
   return res.status(200).json({ message: "User login successful" });
@@ -165,12 +161,7 @@ const forgetpassword = async (req, res) => {
       res.json({ message: "user not found!" });
     }
 
-    console.log("🚀 ~ forgetpassword ~ userExists.email:", userExists.email)
-    const otp = await send_otp(userExists.email,);
-    console.log("🚀 ~ forgetpassword ~ otp:", otp)
-
-
-    const newpassword = req.body.newpassword
+  const newpassword = req.body.newpassword
     const password = req.body.password
     if (!password==newpassword) {
         res.json({ message: "passwords does not match?" });
@@ -194,7 +185,27 @@ const profile = (req, res) => {
   let user = req.user;
   res.status(200).json({ message: "profile success", user: user });
 };
+    
 
+// OTP
+
+
+ const otp = async (req, res) => {
+  const useremail = req.body.email;
+  try {
+    const user = await Userservice.findemail(useremail)
+    if(!user.email){
+      res.status(404).json({ message: "this email not velid" });
+    }
+
+    const otp = await send_otp(user.email);
+    res.status(200).json({ message: "OTP sed success fully" });
+
+
+  } catch (error) {
+    res.status(404).json({ message: error.message});
+  }
+ }
 module.exports = {
   register,
   userlist,
@@ -204,4 +215,5 @@ module.exports = {
   userupdate,
   forgetpassword,
   profile,
+  otp
 };
