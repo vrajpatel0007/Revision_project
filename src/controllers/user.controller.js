@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 const { send_mail } = require("../services/mail.service");
 const { createToken } = require("../middleware/auth");
 
+
+
+// register
 const register = async (req, res) => {
   const reqBody = req.body;
 
@@ -21,10 +24,13 @@ const register = async (req, res) => {
     };
     const user = await Userservice.register(body);
     if (user) {
-    const email = await send_mail(body.email,"register","you are registered successfully ")
-      console.log("🚀 ~ register ~ email:", email)
-      
-  }
+      const email = await send_mail(
+        body.email,
+        "register",
+        "you are registered successfully "
+      );
+      console.log("🚀 ~ register ~ email:", email);
+    }
     res
       .status(201)
       .json({ message: "User registered successfully", data: user });
@@ -34,10 +40,11 @@ const register = async (req, res) => {
   }
 };
 
+
+// userlist
 const userlist = async (req, res) => {
-  const reqBody = req.body;
   try {
-    const user = await Userservice.userlist(reqBody);
+    const user = await Userservice.userlist();
 
     res.status(201).json({ message: "User list", data: user });
   } catch (error) {
@@ -59,6 +66,9 @@ const usersdelete = async (req, res) => {
   }
 };
 
+
+// Iduser
+
 const Iduser = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -73,6 +83,8 @@ const Iduser = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// login user
 
 const login = async (req, res) => {
   const body = req.body;
@@ -93,16 +105,22 @@ const login = async (req, res) => {
     rol: user.rol,
   };
   if (data) {
-    const email = await send_mail(data.email,"login","you are login successful")
-      console.log("🚀 ~ register ~ email:", email)
-      
+    const email = await send_mail(
+      data.email,
+      "login",
+      "you are login successful"
+    );
+    console.log("🚀 ~ register ~ email:", email);
   }
   let token = createToken(data);
-  const tok = token
+  console.log("🚀 ~ login ~ token:", token);
+
   res.cookie("token", token);
 
   return res.status(200).json({ message: "User login successful" });
 };
+
+// userupdate
 
 const userupdate = async (req, res) => {
   try {
@@ -114,11 +132,8 @@ const userupdate = async (req, res) => {
 
     const body = {};
 
-    if (req.body.name) {
+    if (req.body) {
       body.name = req.body.name;
-    }
-
-    if (req.body.email) {
       body.email = req.body.email;
     }
 
@@ -144,26 +159,24 @@ const userupdate = async (req, res) => {
 };
 
 
+// userupdate
 
-const forgetpassword = async (req,res) => {
-  try {
-    const userid = req.params.userId;
-    const userExists = await Userservice.findById(userid);
-    if (!userExists) {
-      res.json({ message: "user not found!" });
-    }
-
-
-  } catch (error) {
-    res.json({ message: error.message });
-  }
-}
-
+// const forgetpassword = async (req, res) => {
+//   try {
+//     const userid = req.params.userId;
+//     const userExists = await Userservice.findById(userid);
+//     if (!userExists) {
+//       res.json({ message: "user not found!" });
+//     }
+//   } catch (error) {
+//     res.json({ message: error.message });
+//   }
+// };
+// profile
 const profile = (req, res) => {
-  let user = req.user
-  res.status(200).json({ message:"profile success" , user: user})
-}
-
+  let user = req.user;
+  res.status(200).json({ message: "profile success", user: user });
+};
 
 module.exports = {
   register,
@@ -172,6 +185,6 @@ module.exports = {
   login,
   Iduser,
   userupdate,
-  forgetpassword,
-  profile
+  // forgetpassword,
+  profile,
 };

@@ -10,8 +10,8 @@ const register = async (body) => {
     image: body.image,
   });
 };
-const userlist = (body) => {
-  return User.find(body);
+const userlist = async () => {
+  return await User.find({});
 };
 const findById = (userid) => {
   return User.findById(userid);

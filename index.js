@@ -10,8 +10,8 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(routes);
 app.use(cookieParser());
+app.use(routes);
 
 
 
@@ -27,6 +27,6 @@ app.get("/",(req,res)=>{
 })
 
 connectDB();
-http.createServer(app).listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`server is running at port : ${process.env.PORT}`);
 });

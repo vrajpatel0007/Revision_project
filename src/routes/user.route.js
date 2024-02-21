@@ -1,7 +1,7 @@
 const express = require("express");
 const user_controller = require("../controllers/user.controller");
 const upload = require("../middleware/multer");
-const { autheticate } = require("../middleware/auth");
+const { autheticate , restrict } = require("../middleware/auth");
 const router = express.Router();
 
 router.post(
@@ -16,11 +16,11 @@ router.post(
 );
 router.get("/list", autheticate, user_controller.userlist);
 router.get("/userByid/:userId", autheticate, user_controller.Iduser);
-router.put(
-  "/Changepassword/:userId",
-  autheticate,
-  user_controller.forgetpassword
-);
+  // router.put(
+  //   "/Changepassword/:userId",
+  //   autheticate,
+  //   user_controller.forgetpassword
+  // );
 router.put(
   "/userupdate/:userId",
   autheticate,
@@ -34,6 +34,6 @@ router.put(
 );
 router.delete("/usersdelete/:userId", autheticate, user_controller.usersdelete);
 router.post("/login", user_controller.login);
-router.get("/profile", autheticate, user_controller.profile);
+router.get("/profile", autheticate,restrict(['admin']), user_controller.profile);
 
 module.exports = router;
