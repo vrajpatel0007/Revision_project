@@ -38,7 +38,7 @@ const register = async (req, res) => {
   }
 };
 
-// userlist
+// user_list
 const userlist = async (req, res) => {
   try {
     const user = await Userservice.userlist();
@@ -49,7 +49,7 @@ const userlist = async (req, res) => {
   }
 };
 
-// usersdelete
+// users_delete
 const usersdelete = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -65,7 +65,7 @@ const usersdelete = async (req, res) => {
   }
 };
 
-// Iduser
+// Id_user
 const Iduser = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -81,7 +81,7 @@ const Iduser = async (req, res) => {
   }
 };
 
-// login user
+// login_user
 const login = async (req, res) => {
   const body = req.body;
   const password = req.body.password;
@@ -113,7 +113,7 @@ const login = async (req, res) => {
   return res.status(200).json({ message: "User login successful" });
 };
 
-// userupdate
+// user_update
 const userupdate = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -150,7 +150,7 @@ const userupdate = async (req, res) => {
   }
 };
 
-// forgetpassword
+// forget_password
 const forgetpassword = async (req, res) => {
   try {
     const userid = req.params.userId;
