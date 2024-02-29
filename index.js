@@ -13,18 +13,15 @@ app.use(cors());
 app.use(cookieParser());
 app.use(routes);
 
-
-
-
 dotenv.config({
   path: "./.env",
 });
 module.exports = app;
-app.set('view engine','ejs')
+app.set("view engine", "ejs");
 app.set("views", "./src/views");
-app.get("/",(req,res)=>{
-  res.render("login.ejs")
-})
+app.get("/", (req, res) => {
+  res.render("login.ejs");
+});
 
 connectDB();
 app.listen(process.env.PORT || 3000, () => {

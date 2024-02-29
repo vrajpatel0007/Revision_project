@@ -17,7 +17,6 @@ const autheticate = (req, res, next) => {
 
   try {
     let user = jwt.verify(token, process.env.SECRET_key);
-    console.log("🚀 ~ authenticate ~ user:", user);
 
     req.user = user;
     next();
@@ -33,9 +32,6 @@ const restrict=(...data)=>{
   return (req,res,next)=>{
   
       let user = req.user
-      console.log(user,"restricttttt");
-  
-      console.log("🚀 ~ return ~ data[0].includes(user.rol):", data[0].includes(user.rol))
       if(data[0].includes(user.rol))
       {
           req.user=user

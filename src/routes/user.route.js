@@ -6,12 +6,7 @@ const router = express.Router();
 
 router.post(
   "/register",
-  upload.fields([
-    {
-      name: "image",
-      maxCount: 1,
-    },
-  ]),
+  upload.fields([{ name: "image", maxCount: 1 }]),
   user_controller.register
 );
 router.get("/list", autheticate, user_controller.userlist);
@@ -20,12 +15,7 @@ router.put("/Changepassword/:userId", user_controller.forgetpassword);
 router.put(
   "/userupdate/:userId",
   autheticate,
-  upload.fields([
-    {
-      name: "image",
-      maxCount: 1,
-    },
-  ]),
+  upload.fields([{ name: "image", maxCount: 1 }]),
   user_controller.userupdate
 );
 router.delete("/usersdelete/:userId", autheticate, user_controller.usersdelete);
@@ -37,5 +27,6 @@ router.get(
   user_controller.profile
 );
 router.post("/OTP", user_controller.otp);
+router.post("/verifyotp", user_controller.verifyotp);
 
 module.exports = router;

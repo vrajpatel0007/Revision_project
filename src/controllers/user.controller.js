@@ -5,8 +5,6 @@ const { send_mail } = require("../services/mail.service");
 const { send_otp } = require("../services/verify.service");
 const { createToken } = require("../middleware/auth");
 
-
-
 // register
 const register = async (req, res) => {
   const reqBody = req.body;
@@ -50,6 +48,8 @@ const userlist = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// usersdelete
 const usersdelete = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -150,9 +150,7 @@ const userupdate = async (req, res) => {
   }
 };
 
-
 // forgetpassword
-
 const forgetpassword = async (req, res) => {
   try {
     const userid = req.params.userId;
@@ -161,51 +159,72 @@ const forgetpassword = async (req, res) => {
       res.json({ message: "user not found!" });
     }
 
-  const newpassword = req.body.newpassword
-    const password = req.body.password
-    if (!password==newpassword) {
-        res.json({ message: "passwords does not match?" });
+    const newpassword = req.body.newpassword;
+    const password = req.body.password;
+    if (!password == newpassword) {
+      res.json({ message: "passwords does not match?" });
     }
-  const bpass = await bcrypt.hash(password, 10);
-  const pass ={
-    password: bpass,
-  }
-  const changepassword = await Userservice.changepass(userid,pass.password)
+    const bpass = await bcrypt.hash(password, 10);
+    const pass = {
+      password: bpass,
+    };
+    const changepassword = await Userservice.changepass(userid, pass.password);
 
-res.json({message: "successfull password changed"})
-  
+    res.json({ message: "successfull password changed" });
   } catch (error) {
     res.json({ message: error.message });
   }
 };
-
 
 // profile
 const profile = (req, res) => {
   let user = req.user;
   res.status(200).json({ message: "profile success", user: user });
 };
-    
 
 // OTP
-
-
- const otp = async (req, res) => {
+const otp = async (req, res) => {
   const useremail = req.body.email;
   try {
-    const user = await Userservice.findemail(useremail)
-    if(!user.email){
-      res.status(404).json({ message: "this email not velid" });
+    const user = await Userservice.findemail(useremail);
+    if (!user.email) {
+      res.status(404).json({ message: "This Email Doesn't Exist" });
     }
 
     const otp = await send_otp(user.email);
-    res.status(200).json({ message: "OTP sed success fully" });
-
-
+    const v_otp = await Userservice.otp_list();
+    res.status(200).json({ message: "OTP Sed Success Fully" });
   } catch (error) {
-    res.status(404).json({ message: error.message});
+    res.status(404).json({ message: error.message });
   }
- }
+};
+
+// verify_OTP
+const verifyotp = async (req, res) => {
+  const otp = req.body.otp;
+
+  if (!otp || otp.trim() === "") {
+    return res.status(400).json({ message: "OTP is required" });
+  }
+
+  try {
+    const v_otp = await Userservice.verify_otp(otp);
+
+    if (v_otp == null) {
+      return res.status(404).json({ message: "This OTP is not valid" });
+    }
+
+    if (v_otp.OTP === otp) {
+      await Userservice.otp_delete(v_otp.id);
+      return res.status(200).json({ message: "OTP verified successfully" });
+    } else {
+      return res.status(404).json({ message: "This OTP is not valid" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   register,
   userlist,
@@ -215,5 +234,6 @@ module.exports = {
   userupdate,
   forgetpassword,
   profile,
-  otp
+  otp,
+  verifyotp,
 };

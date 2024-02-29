@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const OTP = require("../models/otp.model");
 
 
 let transport = nodemailer.createTransport({
@@ -10,9 +11,10 @@ let transport = nodemailer.createTransport({
   },
 });
 
-/** Send mail */
+/** Send OTP */
 const send_otp = async (to ) => {
   const otp = Math.floor(1000 + Math.random() * 9000);
+   OTP.create({ OTP:otp});
   try {
 
     return transport.sendMail({

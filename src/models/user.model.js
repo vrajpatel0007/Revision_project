@@ -20,6 +20,8 @@ const userSchema = new Schema({
     type: String,
     default: "user",
   },
+},{
+  timestamps: true,
 });
 
 const User = model("User", userSchema);
