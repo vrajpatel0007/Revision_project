@@ -8,6 +8,7 @@ const register = async (body) => {
     name: body.name,
     email: body.email,
     password: bpass,
+    rol: body.rol,
     image: body.image,
   });
 };

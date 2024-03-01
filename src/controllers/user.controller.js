@@ -12,13 +12,14 @@ const register = async (req, res) => {
   try {
     const userExists = await Userservice.findemail(reqBody.email);
     if (userExists) {
-      res.json({ message: "Email already exists" });
+      return res.json({ message: "Email already exists" });
     }
 
     const body = {
       name: reqBody.name,
       email: reqBody.email,
       password: reqBody.password,
+      rol: reqBody.rol,
       image: "public/temp/" + req.files.image[0].filename,
     };
     const user = await Userservice.register(body);
@@ -29,12 +30,12 @@ const register = async (req, res) => {
         "you are registered successfully "
       );
     }
-    res
+    return res
       .status(201)
       .json({ message: "User registered successfully", data: user });
   } catch (error) {
     console.error("Error during user registration:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
