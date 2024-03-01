@@ -44,9 +44,9 @@ const userlist = async (req, res) => {
   try {
     const user = await Userservice.userlist();
 
-    res.status(201).json({ message: "User list", data: user });
+    return res.status(201).json({ message: "User list", data: user });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -56,13 +56,13 @@ const usersdelete = async (req, res) => {
     const userid = req.params.userId;
     const userExists = await Userservice.findById(userid);
     if (!userExists) {
-      res.json({ message: "user not found!" });
+      return res.json({ message: "user not found!" });
     }
     const deletedUser = await Userservice.deletedUser(userid);
-    res.status(200).json({ message: "User deleted successfully" });
+    return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     console.error("Error during user deletion:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -72,13 +72,13 @@ const Iduser = async (req, res) => {
     const userid = req.params.userId;
     const userExists = await Userservice.findById(userid);
     if (!userExists) {
-      res.json({ message: "user not found!" });
+      return res.json({ message: "user not found!" });
     }
     const user = await Userservice.userbyid(userid);
-    res.status(200).json({ message: "user  successfully", data: user });
+    return res.status(200).json({ message: "user  successfully", data: user });
   } catch (error) {
     console.error("Error during user deletion:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -111,7 +111,7 @@ const login = async (req, res) => {
   let token = createToken(data);
   res.cookie("token", token);
 
-  return res.status(200).json({ message: "User login successful" });
+  return res.status(200).json({ message: "User login successful", user: data });
 };
 
 // user_update
@@ -120,7 +120,7 @@ const userupdate = async (req, res) => {
     const userid = req.params.userId;
     const userExists = await Userservice.findById(userid);
     if (!userExists) {
-      res.json({ message: "user not found!" });
+      return res.json({ message: "user not found!" });
     }
 
     const body = {};
@@ -143,11 +143,11 @@ const userupdate = async (req, res) => {
     }
 
     const updateuser = await Userservice.updateuser(userid, body);
-    res
+    return res
       .status(200)
       .json({ message: "User updated successfully", user: updateuser });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    return res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -157,13 +157,13 @@ const forgetpassword = async (req, res) => {
     const userid = req.params.userId;
     const userExists = await Userservice.findById(userid);
     if (!userExists) {
-      res.json({ message: "user not found!" });
+      return res.json({ message: "user not found!" });
     }
 
     const newpassword = req.body.newpassword;
     const password = req.body.password;
     if (!password == newpassword) {
-      res.json({ message: "passwords does not match?" });
+      return res.json({ message: "passwords does not match?" });
     }
     const bpass = await bcrypt.hash(password, 10);
     const pass = {
@@ -171,16 +171,16 @@ const forgetpassword = async (req, res) => {
     };
     const changepassword = await Userservice.changepass(userid, pass.password);
 
-    res.json({ message: "successfull password changed" });
+    return res.json({ message: "successfull password changed" });
   } catch (error) {
-    res.json({ message: error.message });
+    return res.json({ message: error.message });
   }
 };
 
 // profile
 const profile = (req, res) => {
   let user = req.user;
-  res.status(200).json({ message: "profile success", user: user });
+  return res.status(200).json({ message: "profile success", user: user });
 };
 
 // OTP
@@ -189,14 +189,14 @@ const otp = async (req, res) => {
   try {
     const user = await Userservice.findemail(useremail);
     if (!user.email) {
-      res.status(404).json({ message: "This Email Doesn't Exist" });
+      return res.status(404).json({ message: "This Email Doesn't Exist" });
     }
 
     const otp = await send_otp(user.email);
     const v_otp = await Userservice.otp_list();
-    res.status(200).json({ message: "OTP Sed Success Fully" });
+    return res.status(200).json({ message: "OTP Sed Success Fully" });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    return res.status(404).json({ message: error.message });
   }
 };
 

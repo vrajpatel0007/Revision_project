@@ -38,7 +38,7 @@ const restrict=(...data)=>{
           next()
       }
      
-      res.status(400).json({message:"you are not allow"})
+      return res.status(400).json({message:"you are not allow"})
   }
   
   }
