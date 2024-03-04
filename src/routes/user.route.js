@@ -28,5 +28,6 @@ routes.get(
 );
 routes.post("/OTP", user_controller.otp);
 routes.post("/verifyotp", user_controller.verifyotp);
+routes.get("/logout", user_controller.logout);
 
 module.exports = routes;

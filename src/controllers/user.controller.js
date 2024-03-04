@@ -226,6 +226,22 @@ const verifyotp = async (req, res) => {
   }
 };
 
+// logout
+const logout = (req, res) => {
+  try {
+    const user = req.cookies['token']
+    console.log("🚀 ~ logout ~ user:", user)
+    if(user){
+      res.clearCookie('token');
+    res.status(200).json({ message: "User logout successfully" });
+    }
+    res.status(404).json({ message: "user already logout" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 module.exports = {
   register,
   userlist,
@@ -237,4 +253,5 @@ module.exports = {
   profile,
   otp,
   verifyotp,
+  logout,
 };
