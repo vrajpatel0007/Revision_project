@@ -2,31 +2,31 @@ const express = require("express");
 const user_controller = require("../controllers/user.controller");
 const upload = require("../middleware/multer");
 const { autheticate, restrict } = require("../middleware/auth");
-const router = express.Router();
+const routes = express.Router();
 
-router.post(
+routes.post(
   "/register",
   upload.fields([{ name: "image", maxCount: 1 }]),
   user_controller.register
 );
-router.get("/list", autheticate, user_controller.userlist);
-router.get("/userByid/:userId", autheticate, user_controller.Iduser);
-router.put("/Changepassword/:userId", user_controller.forgetpassword);
-router.put(
+routes.get("/list", autheticate, user_controller.userlist);
+routes.get("/userByid/:userId", autheticate, user_controller.Iduser);
+routes.put("/Changepassword/:userId", user_controller.forgetpassword);
+routes.put(
   "/userupdate/:userId",
   autheticate,
   upload.fields([{ name: "image", maxCount: 1 }]),
   user_controller.userupdate
 );
-router.delete("/usersdelete/:userId", autheticate, user_controller.usersdelete);
-router.post("/login", user_controller.login);
-router.get(
+routes.delete("/usersdelete/:userId", autheticate, user_controller.usersdelete);
+routes.post("/login", user_controller.login);
+routes.get(
   "/profile",
   autheticate,
   restrict(["admin"]),
   user_controller.profile
 );
-router.post("/OTP", user_controller.otp);
-router.post("/verifyotp", user_controller.verifyotp);
+routes.post("/OTP", user_controller.otp);
+routes.post("/verifyotp", user_controller.verifyotp);
 
-module.exports = router;
+module.exports = routes;
