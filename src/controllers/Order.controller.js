@@ -12,7 +12,8 @@ const createOrder = async (req, res) => {
     }
     if (Order) {
       const email = send_mail(
-        reqBody.c_email,"Order",
+        reqBody.c_email,
+        "Order",
         "you are Order successfully "
       );
     }
@@ -25,6 +26,7 @@ const createOrder = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
 /** Get Order list */
 const getOrderList = async (req, res) => {
   try {
@@ -48,6 +50,7 @@ const getOrderList = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
 //   delete Order
 const deleteOrder = async (req, res) => {
   try {
@@ -73,6 +76,7 @@ const deleteOrder = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
 //  update Order
 const updateDetails = async (req, res) => {
   const reqBody = req.body;

@@ -28,23 +28,23 @@ const findemail = (email) => {
   return User.findOne({ email });
 };
 const updateuser = async (userId, updateBody) => {
-  return User.findByIdAndUpdate(userId, { $set: updateBody },{new:true});
+  return User.findByIdAndUpdate(userId, { $set: updateBody }, { new: true });
 };
 
-const changepass =(userId, password) => {
-  return User.findByIdAndUpdate(userId, { password},{new:true});
+const changepass = (userId, password) => {
+  return User.findByIdAndUpdate(userId, { password }, { new: true });
 };
 
 const verify_otp = async (otp) => {
-  return await OTP.findOne({OTP:otp});
+  return await OTP.findOne({ OTP: otp });
 };
 
 const otp_delete = async (otp_id) => {
-  return OTP.findByIdAndDelete(otp_id)
-}
+  return OTP.findByIdAndDelete(otp_id);
+};
 const otp_list = async () => {
-  return OTP.find({})
-}
+  return OTP.find({});
+};
 
 module.exports = {
   register,
@@ -57,5 +57,5 @@ module.exports = {
   changepass,
   verify_otp,
   otp_delete,
-  otp_list
+  otp_list,
 };

@@ -7,22 +7,28 @@ const routes = express.Router();
 
 /** Create product */
 routes.post(
-  "/create",autheticate,
+  "/create",
+  autheticate,
   upload.fields([{ name: "product_imag", maxCount: 1 }]),
   product_controller.createProduct
 );
 
 /** Get production list */
-routes.get("/list",autheticate, product_controller.getProductList);
+routes.get("/list", autheticate, product_controller.getProductList);
 
 /** Update product details */
 routes.put(
-  "/update/:productId",autheticate,  restrict(["admin"]),
+  "/update/:productId",
+  autheticate,
   upload.fields([{ name: "product_imag", maxCount: 1 }]),
   product_controller.updateProduct
 );
 
 /** Delete product */
-routes.delete("/delete/:productId",autheticate, product_controller.deleteProduct);
+routes.delete(
+  "/delete/:productId",
+  autheticate,
+  product_controller.deleteProduct
+);
 
 module.exports = routes;
