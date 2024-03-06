@@ -27,7 +27,7 @@ const createProduct = async (req, res) => {
         error?.message || "Something went wrong, please try again or later!",
     });
   }
-};.
+};
 
 
 // Get prooduct list
