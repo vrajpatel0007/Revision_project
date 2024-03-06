@@ -16,6 +16,9 @@ routes.post(
 /** Get production list */
 routes.get("/list", autheticate, product_controller.getProductList);
 
+// Get productbyid
+routes.get("/productbyid/:productId", product_controller.getProductById)
+
 /** Update product details */
 routes.put(
   "/update/:productId",

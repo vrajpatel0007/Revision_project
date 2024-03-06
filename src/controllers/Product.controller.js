@@ -1,18 +1,18 @@
 const fs = require("fs");
 const ProductService = require("../services/Product.service");
 
-/** Create product */
+// Create product
 const createProduct = async (req, res) => {
   try {
     const reqBody = req.body;
-    console.log("🚀 ~ createProduct ~ reqBody:", reqBody)
+    console.log("🚀 ~ createProduct ~ reqBody:", reqBody);
     const body = {
       product_name: reqBody.product_name,
       price: reqBody.price,
       product_desc: reqBody.product_desc,
       product_imag: "public/temp/" + req.files.product_imag[0].filename,
     };
-    console.log("🚀 ~ createProduct ~ body:", body)
+    console.log("🚀 ~ createProduct ~ body:", body);
 
     const createdProduct = await ProductService.createProduct(body);
 
@@ -29,7 +29,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-/** Get prooduct list */
+// Get prooduct list
 const getProductList = async (req, res) => {
   try {
     const { search, ...options } = req.query;
@@ -53,14 +53,14 @@ const getProductList = async (req, res) => {
   }
 };
 
-/** Update product details */
+// Update product details
 const updateProduct = async (req, res) => {
   try {
     const reqBody = req.body;
     const productId = req.params.productId;
-    console.log("🚀 ~ updateProduct ~ productId:", productId)
+    console.log("🚀 ~ updateProduct ~ productId:", productId);
     const productExists = await ProductService.getProductById(productId);
-    console.log("🚀 ~ updateProduct ~ productExists:", productExists)
+    console.log("🚀 ~ updateProduct ~ productExists:", productExists);
     if (!productExists) {
       throw new Error("Product not found!");
     }
@@ -98,7 +98,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
-/** Delete product */
+//  Delete product
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.productId;
@@ -123,7 +123,6 @@ const deleteProduct = async (req, res) => {
 
     res.status(200).json({
       message: "Product delete successfully!",
-      data: deletedProduct,
     });
   } catch (error) {
     res.status(error?.statusCode || 400).json({
@@ -134,9 +133,33 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// Get_ProductById
+const getProductById = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    const productExists = await ProductService.getProductById(productId);
+
+    if (!productExists) {
+      return res.json({ message: "Product not found!" });
+    }
+
+    const product = await ProductService.productId(productId);
+    console.log("Retrieved Product:", product);
+
+    return res
+      .status(200)
+      .json({ message: "Product retrieved successfully", data: product });
+  } catch (error) {
+    console.error("Error during product retrieval:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createProduct,
   getProductList,
   updateProduct,
   deleteProduct,
+  getProductById,
 };

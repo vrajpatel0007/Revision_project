@@ -1,3 +1,4 @@
+const product = require("../models/Product.model");
 const Product = require("../models/Product.model");
 
 const getProductList = async (filter, options) => {
@@ -23,10 +24,15 @@ const deleteProduct = async (productId) => {
   return Product.findOneAndDelete({ _id: productId });
 };
 
+const productId = async (body) => {
+  return product.findById(body)
+}
+
 module.exports = {
   getProductList,
   createProduct,
   updateProduct,
   deleteProduct,
-  getProductById
+  getProductById,
+  productId
 };
