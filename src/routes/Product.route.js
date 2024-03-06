@@ -17,7 +17,11 @@ routes.post(
 routes.get("/list", autheticate, product_controller.getProductList);
 
 // Get productbyid
-routes.get("/productbyid/:productId", product_controller.getProductById)
+routes.get(
+  "/productbyid/:productId",
+  autheticate,
+  product_controller.getProductById
+);
 
 /** Update product details */
 routes.put(

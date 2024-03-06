@@ -69,9 +69,7 @@ const deleteOrder = async (req, res) => {
       );
     }
 
-    res.status(200).json({
-      message: "Order delete successfully!",
-    });
+    res.status(200).json({ message: "Order delete successfully!" });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
@@ -104,29 +102,28 @@ const updateDetails = async (req, res) => {
   }
 };
 
-
+// Id_byOrder
 const IdbyOrder = async (req, res) => {
   try {
     const OrderId = req.params.OrderId;
-
     const orderExists = await OrderService.OrderId(OrderId);
-    
     if (!orderExists) {
-      return res.status(404).json({message: "Order does not exist"});
+      return res.status(404).json({ message: "Order does not exist" });
     }
 
     const order = await OrderService.OrderId(OrderId);
-    return res.status(200).json({message: "Order successfully find!", user: order});
-
+    return res
+      .status(200)
+      .json({ message: "Order successfully find!", user: order });
   } catch (error) {
-    return res.status(400).json({message: error.message})
+    return res.status(400).json({ message: error.message });
   }
-}
+};
 
 module.exports = {
   createOrder,
   getOrderList,
   deleteOrder,
   updateDetails,
-  IdbyOrder
+  IdbyOrder,
 };
