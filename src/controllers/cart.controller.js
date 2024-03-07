@@ -7,7 +7,7 @@ const addtocart = async (req, res) => {
     const productExists = await cart_service.idproduct(productId);
 
     if (!productExists) {
-      return res.status(404).json({ message: "product not found" });
+      return res.status(404).json({ message: "Product Not Found" });
     }
     const body = {
       product_name: productExists.product_name,
@@ -19,7 +19,7 @@ const addtocart = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Add to cart successfully", data: addcart });
+      .json({ message: "Add To Cart Successfully", data: addcart });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
@@ -32,9 +32,9 @@ const list = async (req, res) => {
     if (!product) {
       return res
         .status(404)
-        .json({ message: "you not added a product in cart" });
+        .json({ message: "You Not Added A Product In Cart" });
     }
-    return res.status(200).json({ message: "All cart items", data: product });
+    return res.status(200).json({ message: "All Cart Items", data: product });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
