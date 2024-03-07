@@ -1,10 +1,11 @@
 const cart_service = require("../services/cart.service");
 
+// Add_to_Cart
 const addtocart = async (req, res) => {
   try {
     const productId = req.params.productId;
     const productExists = await cart_service.idproduct(productId);
-    console.log("🚀 ~ addtocart ~ productExists:", productExists);
+
     if (!productExists) {
       return res.status(404).json({ message: "product not found" });
     }
@@ -13,14 +14,27 @@ const addtocart = async (req, res) => {
       product_imag: productExists.product_imag,
       price: productExists.price,
     };
-    console.log("🚀 ~ addtocart ~ body:", body);
 
     const addcart = await cart_service.addProduct(body);
-    console.log("🚀 ~ addtocart ~ addcart:", addcart);
 
     return res
       .status(200)
-      .json({ message: "Add cart successfully", data: addcart });
+      .json({ message: "Add to cart successfully", data: addcart });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+// Cart_List
+const list = async (req, res) => {
+  try {
+    const product = await cart_service.cart_list();
+    if (!product) {
+      return res
+        .status(404)
+        .json({ message: "you not added a product in cart" });
+    }
+    return res.status(200).json({ message: "All cart items", data: product });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
@@ -28,4 +42,5 @@ const addtocart = async (req, res) => {
 
 module.exports = {
   addtocart,
+  list,
 };

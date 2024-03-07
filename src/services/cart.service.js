@@ -14,8 +14,13 @@ const prodid = async (body) => {
   return await Product.findById(body);
 };
 
+const cart_list = async () => {
+ return Cart.find()
+}
+
 module.exports = {
   addProduct,
   idproduct,
   prodid,
+  cart_list
 };
