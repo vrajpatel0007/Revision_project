@@ -61,7 +61,7 @@ const deleteOrder = async (req, res) => {
     }
 
     const deleteOrder = await OrderService.deleteOrder(OrderId);
-    if (!deleteOrder) {
+    if (deleteOrder) {
       const email = send_mail(
         OrderExists.c_email,
         "delete Order",
