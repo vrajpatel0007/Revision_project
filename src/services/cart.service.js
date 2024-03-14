@@ -17,6 +17,10 @@ const prodid = async (body) => {
   return await Product.findById(body);
 };
 
+const product = async (product_name) => {
+  return await Product.findOne({ product_name: product_name });
+};
+
 const cart_list = async () => {
   return Cart.find();
 };
@@ -33,8 +37,12 @@ const cart_delete = async (cartid) => {
   return Cart.findByIdAndDelete(cartid);
 };
 
-const cart_update = async (cartid, reqbody, prices) => {
-  return Cart.findByIdAndUpdate(cartid,{ $set: reqbody },{ price: prices },{ new: true });
+const cart_update = async (cartid, reqbody, pric) => {
+  return Cart.findByIdAndUpdate(
+    cartid,
+    { $set: reqbody, price: pric },
+    { new: true }
+  );
 };
 
 module.exports = {
@@ -46,4 +54,5 @@ module.exports = {
   cart_id,
   cart_delete,
   cart_update,
+  product,
 };

@@ -29,7 +29,6 @@ const createProduct = async (req, res) => {
   }
 };
 
-
 // Get prooduct list
 const getProductList = async (req, res) => {
   try {

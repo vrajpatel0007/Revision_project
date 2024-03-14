@@ -16,14 +16,6 @@ const addtocart = async (req, res) => {
       price: productExists.price,
     };
 
-    const product = await cart_service.cart_list();
-    console.log("🚀 ~ addtocart ~ product:", product);
-    if (body.product_name == product.product_name) {
-      const add = product.qty + 1;
-      const price = product.price + body.price;
-      const addqty = await cart_service.cartupdate(product._id, add, price);
-      res.status(200).json({ message: "qty add" });
-    }
     const addcart = await cart_service.addProduct(body);
 
     return res
@@ -49,7 +41,7 @@ const list = async (req, res) => {
   }
 };
 
-// delete
+// Cart_delete
 const Cart_delete = async (req, res) => {
   try {
     const cart_id = req.params.cart_id;
@@ -64,6 +56,7 @@ const Cart_delete = async (req, res) => {
   }
 };
 
+// cart_update
 const cart_update = async (req, res) => {
   try {
     const cart_id = req.params.cart_id;
@@ -72,22 +65,43 @@ const cart_update = async (req, res) => {
     if (!cartExists) {
       return res.status(404).json({ message: "Cart Not Exists" });
     }
-    const body = {
-      price: cartExists.price,
-    };
-     
-    const qty = req.body.qty
-    console.log("🚀 ~ constcart_update= ~ qty:", qty)
-    console.log("🚀 ~ constcart_update= ~ body.price:", body.price);
-    const cartDetails = await cart_service.cart_update(cart_id,req.body,body.price*qty);
+    console.log(
+      "🚀 ~ constcart_update= ~ cartExists.product_name:",
+      cartExists.product_name
+    );
+    const cart = await cart_service.product(cartExists.product_name);
 
-    return res.status(200).json({
-      success: true,
-      message: "cart details update successfully!",
-      deta: cartDetails,
-    });
+    const price = parseFloat(cart.price);
+    console.log("🚀 ~ constcart_update= ~ price:", price);
+    const qty = parseFloat(req.body.qty);
+    console.log("🚀 ~ constcart_update= ~ qty:", qty);
+
+    if (isNaN(price) || isNaN(qty)) {
+      throw new Error("Price or quantity is not a valid number");
+    }
+
+    const tottel = price * qty;
+    console.log("🚀 ~ constcart_update= ~ tottel:", tottel);
+
+    const reqbody = {
+      price: tottel,
+    };
+
+    const cartDetails = await cart_service.cart_update(
+      cart_id,
+      req.body,
+      reqbody.price
+    );
+
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: "Cart details updated successfully!",
+        details: cartDetails,
+        Total: tottel,
+      });
   } catch (error) {
-    console.log("🚀 ~ constcart_update= ~ error.message:", error.message);
     return res.status(400).json({ message: error.message });
   }
 };
