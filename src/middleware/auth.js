@@ -4,12 +4,8 @@ const createToken = (data) => {
   return jwt.sign(data, process.env.SECRET_key);
 };
 
-
-
 const autheticate = (req, res, next) => {
-
-  
-  const token = req.cookies['token'];
+  const token = req.cookies["token"];
 
   if (!token) {
     return res.status(400).json({ message: "You are not login" });
@@ -25,26 +21,25 @@ const autheticate = (req, res, next) => {
   }
 };
 
-
-
-const restrict=(...data)=>{
-
-  return (req,res,next)=>{
-  
-      let user = req.user
-      if(data[0].includes(user.rol))
-      {
-          req.user=user
-          next()
-      }
-     
-      return res.status(400).json({message:"you are not allow"})
-  }
-  
-  }
+const restrict = (...data) => {
+  return (req, res, next) => {
+    let user = req.user;
+    console.log("🚀 ~ return ~ user:", user);
+    if (data[0].includes(user.rol)) {
+      req.user = user;
+      next();
+    }
+    console.log(
+      "🚀 ~ return ~ data[0].includes(user.rol):",
+      data[0].includes(user.rol)
+    );
+    console.log("🚀 ~ return ~ data[0]:", data[0]);
+    return res.status(400).json({ message: "you are not allow" });
+  };
+};
 
 module.exports = {
   createToken,
   autheticate,
-  restrict
+  restrict,
 };

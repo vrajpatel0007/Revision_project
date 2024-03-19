@@ -5,15 +5,12 @@ const ProductService = require("../services/Product.service");
 const createProduct = async (req, res) => {
   try {
     const reqBody = req.body;
-    console.log("🚀 ~ createProduct ~ reqBody:", reqBody);
     const body = {
       product_name: reqBody.product_name,
       price: reqBody.price,
       product_desc: reqBody.product_desc,
       product_imag: "public/temp/" + req.files.product_imag[0].filename,
     };
-    console.log("🚀 ~ createProduct ~ body:", body);
-
     const createdProduct = await ProductService.createProduct(body);
 
     res.status(200).json({
@@ -58,21 +55,16 @@ const updateProduct = async (req, res) => {
   try {
     const reqBody = req.body;
     const productId = req.params.productId;
-    console.log("🚀 ~ updateProduct ~ productId:", productId);
     const productExists = await ProductService.getProductById(productId);
-    console.log("🚀 ~ updateProduct ~ productExists:", productExists);
     if (!productExists) {
       throw new Error("Product not found!");
     }
-
     const body = {};
-
     if (req.body) {
       body.product_name = reqBody.product_name;
       body.price = reqBody.price;
       body.product_desc = reqBody.product_desc;
     }
-
     if (req.files && req.files.product_imag) {
       const parth = productExists.product_imag;
       fs.unlink(parth, (err) => {
@@ -84,7 +76,6 @@ const updateProduct = async (req, res) => {
       });
       body.product_imag = "public/temp/" + req.files.product_imag[0].filename;
     }
-
     const updatedProduct = await ProductService.updateProduct(productId, body);
     res.status(200).json({
       message: "Product details update successfully!",

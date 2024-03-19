@@ -60,21 +60,17 @@ const Cart_delete = async (req, res) => {
 const cart_update = async (req, res) => {
   try {
     const cart_id = req.params.cart_id;
-    console.log("🚀 ~ constcart_update= ~ cart_id:", cart_id);
+
     const cartExists = await cart_service.cart_id(cart_id);
     if (!cartExists) {
       return res.status(404).json({ message: "Cart Not Exists" });
     }
-    console.log(
-      "🚀 ~ constcart_update= ~ cartExists.product_name:",
-      cartExists.product_name
-    );
+
     const cart = await cart_service.product(cartExists.product_name);
 
     const price = parseFloat(cart.price);
-    console.log("🚀 ~ constcart_update= ~ price:", price);
+
     const qty = parseFloat(req.body.qty);
-    console.log("🚀 ~ constcart_update= ~ qty:", qty);
 
     if (isNaN(price) || isNaN(qty)) {
       throw new Error("Price or quantity is not a valid number");
@@ -93,14 +89,12 @@ const cart_update = async (req, res) => {
       reqbody.price
     );
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Cart details updated successfully!",
-        details: cartDetails,
-        Total: tottel,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Cart details updated successfully!",
+      details: cartDetails,
+      Total: tottel,
+    });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }

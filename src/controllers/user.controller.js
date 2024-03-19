@@ -97,10 +97,10 @@ const login = async (req, res) => {
     return res.status(500).json({ message: "Incorrect password" });
   }
   const data = {
-    _id: user._id,
-    email: user.email,
-    rol: user.rol,
-  };
+     _id: user._id,
+     email: user.email,
+     rol: user.rol,
+   };
   if (data) {
     const email = await send_mail(
       data.email,
