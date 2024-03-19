@@ -31,7 +31,7 @@ const register = async (req, res) => {
       );
     }
     return res
-      .status(201)
+      .status(200)
       .json({ message: "User registered successfully", data: user });
   } catch (error) {
     console.error("Error during user registration:", error);
@@ -44,7 +44,7 @@ const userlist = async (req, res) => {
   try {
     const user = await Userservice.userlist();
 
-    return res.status(201).json({ message: "User list", data: user });
+    return res.status(200).json({ message: "User list", data: user });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
