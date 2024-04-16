@@ -2,7 +2,7 @@ const Cart = require("../models/cart.model");
 const Product = require("../models/Product.model");
 
 const addProduct = async (product) => {
-  return Cart.create(product);
+  return await Cart.create(product);
 };
 
 const idproduct = async (productId) => {
@@ -22,10 +22,11 @@ const product = async (product_name) => {
 };
 
 const cart_list = async () => {
-  return Cart.find();
+  return await Cart.find().populate("product");
 };
+
 const cartupdate = async (cartid, add, price) => {
-  return Cart.findByIdAndUpdate(
+  return await Cart.findByIdAndUpdate(
     cartid,
     { qty: add },
     { price: price },
@@ -34,11 +35,11 @@ const cartupdate = async (cartid, add, price) => {
 };
 
 const cart_delete = async (cartid) => {
-  return Cart.findByIdAndDelete(cartid);
+  return await Cart.findByIdAndDelete(cartid);
 };
 
 const cart_update = async (cartid, reqbody, pric) => {
-  return Cart.findByIdAndUpdate(
+  return await Cart.findByIdAndUpdate(
     cartid,
     { $set: reqbody, price: pric },
     { new: true }

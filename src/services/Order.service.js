@@ -1,27 +1,26 @@
 const Order = require("../models/Order.model");
 
-
 const createOrder = async (reqBody) => {
-  return Order.create(reqBody);
+  return await Order.create(reqBody);
 };
-const getOrderList = async (filter, options) => {
-  return Order.find();
+const getOrderList = async () => {
+  return await Order.find();
 };
 const deleteOrder = async (OrderId) => {
-  return Order.findByIdAndDelete(OrderId);
+  return await Order.findByIdAndDelete(OrderId);
 };
 
 const getOrderById = async (OrderId) => {
-  return Order.findById(OrderId);
+  return await Order.findById(OrderId);
 };
 
 const updateDetails = async (OrderId, updateBody) => {
-  return Order.findByIdAndUpdate(OrderId, { $set: updateBody });
+  return await Order.findByIdAndUpdate(OrderId, { $set: updateBody });
 };
 
 const OrderId = async (body) => {
-  return Order.findById(body)
-}
+  return await Order.findById(body);
+};
 
 module.exports = {
   createOrder,

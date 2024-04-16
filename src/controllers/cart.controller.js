@@ -14,6 +14,7 @@ const addtocart = async (req, res) => {
       product_name: productExists.product_name,
       product_imag: productExists.product_imag,
       price: productExists.price,
+      product:productId
     };
 
     const addcart = await cart_service.addProduct(body);

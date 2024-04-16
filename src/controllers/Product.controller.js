@@ -29,14 +29,7 @@ const createProduct = async (req, res) => {
 // Get prooduct list
 const getProductList = async (req, res) => {
   try {
-    const { search, ...options } = req.query;
-    let filter = {};
-
-    if (search) {
-      filter.product_name = { $regex: search, $options: "i" };
-    }
-
-    const getList = await ProductService.getProductList(filter, options);
+    const getList = await ProductService.getProductList();
 
     res.status(200).json({
       data: getList,

@@ -1,19 +1,17 @@
-const product = require("../models/Product.model");
 const Product = require("../models/Product.model");
 
 const getProductList = async (filter, options) => {
-  const skip = Number((options.page || 1) - 1) * Number(options.limit || 10);
-  return Product.find(filter).limit(Number(options.limit)).skip(Number(skip));
+  return await Product.find();
 };
 const getProductById = async(productId)=>{
-  return Product.findById(productId)
+  return await Product.findById(productId)
 }
 const createProduct = async (reqBody) => {
-  return Product.create(reqBody);
+  return await Product.create(reqBody);
 };
 
 const updateProduct = async (productId, reqBody) => {
-  return Product.findOneAndUpdate(
+  return await Product.findOneAndUpdate(
     { _id: productId },
     { $set: reqBody },
     { new: true }
@@ -21,11 +19,11 @@ const updateProduct = async (productId, reqBody) => {
 };
 
 const deleteProduct = async (productId) => {
-  return Product.findOneAndDelete({ _id: productId });
+  return await Product.findOneAndDelete({ _id: productId });
 };
 
 const productId = async (body) => {
-  return product.findById(body)
+  return await Product.findById(body)
 }
 
 module.exports = {

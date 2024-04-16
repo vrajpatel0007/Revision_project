@@ -2,26 +2,9 @@ const { Schema, model, mongoose } = require("mongoose");
 
 const cartSchema = new Schema(
   {
-    product_name: {
-      type: String,
-      trim: true,
-    },
-    product_imag: {
-      type: String,
-      trim: true,
-    },
-    price: {
-      type: String,
-      trim: true,
-    },
-    product_desc: {
-      type: String,
-      trim: true,
-    },
-    qty: {
-      type: String,
-      required: true,
-      default: "1",
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "product",
     },
   },
   {

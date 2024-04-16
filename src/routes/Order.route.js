@@ -4,7 +4,7 @@ const { autheticate, restrict } = require("../middleware/auth");
 const routes = express.Router();
 
 // create-Order
-routes.post("/create-Order", autheticate, Order_controller.createOrder);
+routes.post("/create-Order/:productId", autheticate, Order_controller.createOrder);
 
 //  Get Order list 
 routes.get("/list", autheticate, Order_controller.getOrderList);

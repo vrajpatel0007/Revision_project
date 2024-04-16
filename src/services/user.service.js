@@ -40,10 +40,10 @@ const verify_otp = async (otp) => {
 };
 
 const otp_delete = async (otp_id) => {
-  return OTP.findByIdAndDelete(otp_id);
+  return await OTP.findByIdAndDelete(otp_id);
 };
 const otp_list = async () => {
-  return OTP.find({});
+  return await OTP.find({});
 };
 
 module.exports = {

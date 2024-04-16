@@ -30,17 +30,7 @@ const createOrder = async (req, res) => {
 /** Get Order list */
 const getOrderList = async (req, res) => {
   try {
-    const { search, ...options } = req.query;
-    let filter = {};
-
-    if (search) {
-      filter.$or = [
-        { first_name: { $regex: search, $options: "i" } },
-        { last_name: { $regex: search, $options: "i" } },
-      ];
-    }
-
-    const getList = await OrderService.getOrderList(filter, options);
+    const getList = await OrderService.getOrderList();
 
     res.status(200).json({
       message: "Get Order list successfully!",
@@ -112,6 +102,7 @@ const IdbyOrder = async (req, res) => {
     }
 
     const order = await OrderService.OrderId(OrderId);
+    await order.populate("product")
     return res
       .status(200)
       .json({ message: "Order successfully find!", user: order });
