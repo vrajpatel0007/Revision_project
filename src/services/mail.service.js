@@ -4,8 +4,8 @@ let transport = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   auth: {
-    user: "vraj40983@gmail.com",
-    pass: "czlslfuwkbipdagi",
+    user: "< Your Email >",
+    pass: "< Passowrd >",
   },
 });
 
@@ -13,7 +13,7 @@ let transport = nodemailer.createTransport({
 const send_mail = async (to, subject, data) => {
   try {
     return transport.sendMail({
-      from: "<vraj40983@gmail.com>",
+      from: "< Your Email >",
       to,
       subject,
       html: data,
