@@ -3,7 +3,7 @@ const fs = require("fs");
 const bcrypt = require("bcrypt");
 const { send_mail } = require("../services/mail.service");
 const { send_otp } = require("../services/verify.service");
-const { createToken } = require("../middleware/auth");
+const jwt = require("jsonwebtoken");
 
 // register
 const register = async (req, res) => {
@@ -41,6 +41,9 @@ const register = async (req, res) => {
 
 // user_list
 const userlist = async (req, res) => {
+  
+  const usweid = req.user._id
+  console.log("🚀 ~ login ~ usweid:", usweid)
   try {
     const user = await Userservice.userlist();
 
@@ -108,10 +111,11 @@ const login = async (req, res) => {
       "you are login successful"
     );
   }
-  let token = createToken(data);
-  res.cookie("token", token);
+  const token =  jwt.sign(data, process.env.SECRET_key);
+  console.log("🚀 ~ login ~ token:", token)
+  // res.cookie("token", token);
 
-  return res.status(200).json({ message: "User login successful", user: data });
+  return res.status(200).json({ token: token });
 };
 
 // user_update

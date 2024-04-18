@@ -6,11 +6,14 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const routes = require("./src/routes/route");
+const passport = require('passport');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(cookieParser());
+require("./src/config/passport")
+app.use(passport.initialize());
 app.use(routes);
 
 dotenv.config({

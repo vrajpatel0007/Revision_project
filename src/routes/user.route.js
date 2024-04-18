@@ -1,7 +1,8 @@
 const express = require("express");
 const user_controller = require("../controllers/user.controller");
 const upload = require("../middleware/multer");
-const { autheticate, restrict } = require("../middleware/auth");
+const { autheticate } = require("../middleware/auth");
+const {  restrict } = require("../middleware/auth");
 const routes = express.Router();
 
 routes.post(

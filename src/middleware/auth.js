@@ -1,24 +1,18 @@
-const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
-const createToken = (data) => {
-  return jwt.sign(data, process.env.SECRET_key);
-};
 
 const autheticate = (req, res, next) => {
-  const token = req.cookies["token"];
-
-  if (!token) {
-    return res.status(400).json({ message: "You are not login" });
-  }
-
-  try {
-    let user = jwt.verify(token, process.env.SECRET_key);
-
-    req.user = user;
+  passport.authenticate("jwt", { session: false }, (err, userData) => {
+    console.log("🚀 ~ passport.authenticate ~ userData:", userData)
+    if (err) {
+      return res.status(400).json({ msg: "error authenticating" });
+    }
+    if (userData == false) {
+      return res.status(400).json({ msg: "authenticate your self" });
+    }
+    req.user = userData;
     next();
-  } catch (err) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
+  })(req, res, next);
 };
 
 const restrict = (...data) => {
@@ -39,7 +33,6 @@ const restrict = (...data) => {
 };
 
 module.exports = {
-  createToken,
   autheticate,
   restrict,
 };
